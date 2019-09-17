@@ -1,0 +1,44 @@
+.react-html5-camera-photo {
+  position: relative;
+  text-align: center;
+  max-width: 320px;
+}
+
+.react-html5-camera-photo > video {
+  width: 100%;
+  object-fit: cover !important;
+  height: 520px;
+}
+
+.react-html5-camera-photo > img {
+  width: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.react-html5-camera-photo > .display-error {
+  width: 768px;
+  margin: 0 auto;
+}
+
+@media(max-width:768px){
+  .react-html5-camera-photo > video, .react-html5-camera-photo > img {
+    width: 100%;
+  }
+  .react-html5-camera-photo > .display-error {
+    width: 100%;
+  }
+}
+
+/* fullscreen enable by props */
+.react-html5-camera-photo-fullscreen > video, .react-html5-camera-photo-fullscreen > img {
+  width: 100vw;
+  height:100vh;
+}
+.react-html5-camera-photo-fullscreen > video {
+  object-fit: fill;
+}
+.react-html5-camera-photo-fullscreen > .display-error {
+  width: 100vw;
+  height:100vh;
+}

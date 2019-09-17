@@ -18,3 +18,16 @@ body {
   font-size: 14px;
   color: black;
 }
+.mobile{
+
+  width: 358px; margin: auto; background: url("../App/iphone5.png") no-repeat; height: 800px;
+}
+.mobile2{
+
+  /* width: 308px; margin: 90px 25px; border: solid 2px #000; border-radius: 4px; position: absolute; height: 547px; */
+  max-width: 308px;
+  margin: 90px 25px;
+  border: solid 2px #000;
+  border-radius: 4px;
+  position: absolute;
+}

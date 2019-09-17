@@ -1,0 +1,13 @@
+#display-error {
+ color: #000;
+    background-color: #fff;
+    position: relative;
+    width: 100%;
+    text-align: center;
+    margin-bottom: -43px;
+    top: 211px;
+    height: 59px;
+    overflow-x: inherit;
+}
+
+

@@ -1,11 +1,12 @@
 //server.js
-
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
-const uuidv4 =require('uuidv4');
+
+var https = require('https');
 //import { Router } from 'express';
 const nodemailer = require('nodemailer');
 const imagesToPdf = require("images-to-pdf")
@@ -17,12 +18,17 @@ let app = express();
 const port = process.env.PORT || 8000;
 
 app.use(cors());
+app.use(express.json({limit: '50mb'}));
 app.use(bodyParser.json());
+const crypto = require("crypto");
 
-async function ConvertToPdf (){
-  const file = './PdfFiles/'+uuidv4()+'.pdf';
-  const file='pss.pdf';
-  let result= await imagesToPdf(["notfound.png"], file)
+
+
+async function ConvertToPdf (image,fileName){
+  console.log(image)
+  const file = __dirname+'/pdfs/'+fileName+'.pdf';
+  
+  let result= await imagesToPdf([image], file)
   if(result)
   {
     let TemplateData;
@@ -76,14 +82,14 @@ async function main(pdfPath, TemplateData) {
   // send mail with defined transport object
   let info = await transporter.sendMail({
       from: TemplateData.SmtpCredentials.user, // sender address
-      to: 'muhammad.ahmedraza@basecampdata.com,ahmed.zubair@basecampdata.com', // list of receivers
-      subject: 'Image ?', // Subject line
-      text: 'Cam Image', // plain text body
-      html: '<b>Hey Cam Image?</b>', // html body,
+      to: TemplateData.SmtpCredentials.recipient, // list of receivers
+      subject: 'Thanks for taking the snapshot from our Service', // Subject line
+      text: '', // plain text body
+      html: '<b> Here is your image</b>', // html body,
       attachments: [  
       {
       
-        filename: pdfPath,
+        filename: 'yourImage.pdf',
         path: pdfPath
       }
       ]
@@ -114,13 +120,51 @@ app.get('/api/cc', (req, res)=> {
 
 //POST request to server
 app.post('/api', (req, res)=> {
-  console.log(req.body);
-  //ConvertToPdf ();
-  console.log("Yes Got it");
+ // console.log(req.body);
+ 
 })
+
+function dataToImage (data)
+{
+
+function decodeBase64Image(dataString) {
+  var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+    response = {};
+
+  if (matches.length !== 3) {
+    return new Error('Invalid input string');
+  }
+
+  response.type = matches[1];
+  response.data = new Buffer(matches[2], 'base64');
+
+  return response;
+}
+
+
+var imageBuffer = decodeBase64Image(data);
+console.log('hello '+imageBuffer);
+var file =crypto.randomBytes(16).toString("hex");
+var path =__dirname+'/Images/'+file+'.jpg';
+fs.writeFile(path, imageBuffer.data, function(err) {
+if(!err)
+{
+  ConvertToPdf(path,file);
+}
+
+ });
+}
+
 app.post('/api/Image', (req, res)=> {
-  console.log(req.body);
-  ConvertToPdf ();
+
+ //console.log(req.body.message.data);
+dataToImage(req.body.message.data);
+
+  //ConvertToPdf ();
+ // console.log("Yes Got it");
+  //console.log(req.body);
+  //ConvertToPdf (req.body.url);
+ 
   console.log("Yes Got it");
 })
 
@@ -137,5 +181,6 @@ app.put('/api', (req, res)=> {
 app.get('*', (req, res) => {
  // res.sendFile(path.resolve(__dirname, '../../../build', 'index.html'));
 });
+console.log(__dirname)
 
 app.listen(port, _=> console.log(`The server is listening on port ${port}`));
