@@ -23,7 +23,7 @@
     "images-to-pdf": "^1.0.3",
     "jslib-html5-camera-photo": "^3.0.2-beta.0",
     "mongodb": "^2.2.33",
-    "nodemailer": "^6.3.0",
+    "nodemailer": "^6.4.16",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-html5-camera-photo": "^1.4.3",
